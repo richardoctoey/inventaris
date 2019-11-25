@@ -25,11 +25,18 @@ class Barang(models.Model):
         b = self.objects.create(kode=kb, nama=nb, harga=hb)
         DetailTransaksi.objects.create(barang=b, action_from=0, harga=hb, jumlah=sab)
 
+    """
+    Perhitungan stok menggunakan table DetailTransaksi dengan mengsum field jumlah.
+    """
     def stokAkhir(self):
         subqs = DetailTransaksi.objects.filter(barang=self)
         stok = subqs.aggregate(Sum('jumlah'))['jumlah__sum']
         return stok
 
+    """
+    Saat bikin barang baru admin bisa langsung set stok.
+    Stok akan masuk ke DetailTransaksi tanpa foreignkey ke Transaksi.
+    """
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         isaved = False
         s = None
@@ -47,7 +54,9 @@ class Barang(models.Model):
         return self.nama
 
 
-
+"""
+Untuk menyimpan transaksi yang dilakukan sales/admin
+"""
 class TransaksiBarang(models.Model):
     invoice_no = models.CharField(max_length=80)
     detail_barangs = models.ManyToManyField('Barang', through='DetailTransaksi')
@@ -60,6 +69,10 @@ class TransaksiBarang(models.Model):
     closed_date = UnixDateTimeField()
     closed_by = models.CharField(max_length=50)
 
+    """
+    Konfigurasi untuk permission. 
+    Bawaan dari django Authentication and Authorization.
+    """
     # class Meta:
     #     permissions = [
     #         ("add", "Tambah Transaksi"),
@@ -70,6 +83,9 @@ class TransaksiBarang(models.Model):
 
 class DetailTransaksi(models.Model):
     ACTIONCHOICE = (
+        #INIT = TAMBAH BARANG DAN LANGSUNG SET STOK.
+        #PENYESUAIAN = SAAT BARANG DITAMBAH ATAU DIKURANGI OLEH ADMIN
+        #TRANSAKSI_SALES = PENGURANGAN OLEH SALES
         (0, "INIT"),
         (1, "PENYESUAIAN"),
         (2, "TRANSAKSI_SALES"),

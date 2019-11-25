@@ -1,0 +1,14 @@
+3 kategori user:
+Admin - Pemilik toko
+- CRUD barang (sudah)
+- Penyesuaian stok (untuk nambah atau kurangin) (belum)
+- Lihat history tambah-kurang barang (bisa DetailTransaksi-Transaksi) (belum)
+
+Member - Karyawan toko:
+- Bisa bikin transaksi (belum)
+- Lihat daftar barang dan jumlah stok (belum)
+
+User:
+- Lihat daftar barang dan jumlah stok (belum)
+
+Konfigurasi permission (belum)
