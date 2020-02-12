@@ -1,4 +1,4 @@
-Django==1.11.25
+Django==1.11.28
 django-unixdatetimefield==1.0.3
 djangotoolbox==1.8.0
 mysql-connector-python==8.0.18
